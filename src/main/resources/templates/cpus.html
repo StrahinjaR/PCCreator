@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>CPUs</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+<h1>CPUs</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Socket</th>
+        <th>Price ($)</th>
+        <th>Napajanje</th>
+        <th>Broj jezgara</th>
+        <th>Brzina</th>
+        <th>Integrisana grafička</th>
+        <th>Add</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="cpu : ${cpus}">
+        <td th:text="${cpu.name}">Naziv</td>
+        <td th:text="${cpu.socket}">Soket</td>
+        <td th:text="${cpu.price}+'€'">Cena</td>
+        <td th:text="${cpu.wattage}">Napajanje</td>
+        <td th:text="${cpu.core_count}">Broj jezgara</td>
+        <td th:text="${cpu.core_clock}">Brzina</td>
+        <td th:text="${cpu.integrated_gpu}">Integrisana grafička</td>
+        <td>
+            <form th:action="@{/assemble/pick_a_part/addCpu}" method="post">
+                <input type="hidden" name="cpuId" th:value="${cpu.ranking}" />
+                <input type="hidden" name="cpuName" th:value="${cpu.name}" />
+                <button type="submit">Add</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>GPUs</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+<h1>GPUs</h1>
+<table>
+    <thead>
+    <tr>
+
+        <th>Name</th>
+        <th>Memory</th>
+        <th>Boost Clock (MHz)</th>
+        <th>Price ($)</th>
+        <th>Memory Type</th>
+        <th>Wattage (W)</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="psu : ${psus}">
+        <td th:text="${psu.name}">Naziv</td>
+        <td th:text="${psu.efficiencyRating}">Memorija</td>
+        <td th:text="${psu.wattage}+'W'">Brzina</td>
+        <td th:text="${psu.price}+ '€'">Cena</td>
+        <td th:text="${psu.modular}">Tip memorije</td>
+        <td>
+            <form th:action="@{assemble/pick_a_part/addPsu}" method="post">
+                <input type="hidden" name="psuId" th:value="${psu.id}"/>
+                <input type="hidden" name="psuName" th:value="${psu.name}"/>
+
+                <button type="submit">Add</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

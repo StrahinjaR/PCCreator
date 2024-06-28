@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>CPUs</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+<h1>CPUs</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Naziv</th>
+        <th>Tip</th>
+        <th>Cena</th>
+        <th>Težina</th>
+        <th>Dodaj</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="case : ${cases}">
+        <td th:text="${case.name}">Naziv</td>
+        <td th:text="${case.type}">Tip</td>
+        <td th:text="${case.price}+ '€'"> Cena</td>
+        <td th:text="${case.weight}+ 'kg'">Težina</td>
+        <td>
+            <form th:action="@{/assemble/pick_a_part/addCase}" method="post">
+                <input type="hidden" name="caseId" th:value="${case.id}" />
+                <input type="hidden" name="caseName" th:value="${case.name}" />
+                <button type="submit">Dodaj/Izmeni</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

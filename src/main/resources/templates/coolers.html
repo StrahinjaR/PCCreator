@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>CPUs</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+<h1>CPUs</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Naziv</th>
+        <th>Brzina fena</th>
+        <th>Price ($)</th>
+        <th>Cena</th>
+        <th>Add</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="cooler : ${coolers}">
+        <td th:text="${cooler.name}">Naziv</td>
+        <td th:text="${cooler.fanRpm}">Brzina fena</td>
+        <td th:text="${cooler.noiseLevel} +'db'">Jačina zvuka</td>
+        <td th:text="${cooler.price} + '€'">Cena</td>
+        <td>
+            <form th:action="@{/assemble/pick_a_part/addCooler}" method="post">
+                <input type="hidden" name="coolerId" th:value="${cooler.id}" />
+                <input type="hidden" name="coolerName" th:value="${cooler.name}" />
+                <button type="submit">Add</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

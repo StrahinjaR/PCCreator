@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>CPUs</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+<h1>CPUs</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Socket</th>
+        <th>Price ($)</th>
+        <th>Napajanje</th>
+        <th>Broj jezgara</th>
+        <th>Brzina</th>
+        <th>Integrisana grafička</th>
+        <th>Add</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="storage : ${storages}">
+        <td th:text="${storage.name}">Naziv</td>
+        <td th:text="${storage.capacity}">Soket</td>
+        <td th:text="${storage.type}">Cena</td>
+        <td th:text="${storage.interfaceType}">Napajanje</td>
+        <td th:text="${storage.price}+'€'">Broj jezgara</td>
+        <td th:text="${storage.readSpeed}">Brzina</td>
+        <td th:text="${storage.writeSpeed}">Integrisana grafička</td>
+        <td>
+            <form th:action="@{/assemble/pick_a_part/addStorage}" method="post">
+                <input type="hidden" name="storageId" th:value="${storage.id}" />
+                <button type="submit">Add</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Pick a Part</title>
+</head>
+<body>
+<h1>Pick Your PC Components</h1>
+
+<div>
+    <h2>Selected Components</h2>
+    <ul>
+        <li>GPU: <span th:text="${selectedGpu}">None</span> <a th:href="@{/gpus}">Change</a></li>
+        <li>CPU: <span th:text="${selectedCpu}">None</span> <a th:href="@{/cpus}">Change</a></li>
+        <li>Motherboard: <span th:text="${selectedMotherboard}">None</span> <a th:href="@{/motherboards}">Change</a></li>
+        <li>PSU: <span th:text="${selectedPsu}">None</span> <a th:href="@{/psus}">Change</a></li>
+        <li>Case: <span th:text="${selectedCase}">None</span> <a th:href="@{/cases}">Change</a></li>
+        <li>Cooler: <span th:text="${selectedCooler}">None</span> <a th:href="@{/coolers}">Change</a></li>
+        <li>Storage:
+            <ul>
+                <li th:each="storage : ${selectedStorages}">
+                    <span th:text="${storage}"></span>
+                </li>
+            </ul>
+            <a th:href="@{/storage}">Add Storage</a>
+        </li>
+        <li>Ram:
+            <ul>
+                <li th:each="ram : ${selectedRams}">
+                    <span th:text="${ram}"></span>
+                </li>
+            </ul>
+            <a th:href="@{/rams}">Add ram</a>
+        </li>
+    </ul>
+</div>
+
+<form th:action="@{/assemble/save}" method="post">
+    <input type="hidden" name="gpuId" th:value="${selectedGpuId}" />
+    <input type="hidden" name="cpuId" th:value="${selectedCpuId}" />
+    <input type="hidden" name="motherboardId" th:value="${selectedMotherboardId}" />
+    <input type="hidden" name="psuId" th:value="${selectedPsuId}" />
+    <input type="hidden" name="caseId" th:value="${selectedCaseId}" />
+    <input type="hidden" name="coolerId" th:value="${selectedCoolerId}" />
+    <input type="hidden" name="storageIds" th:value="${selectedStorageIds}" />
+    <input type="hidden" name="storageIds" th:value="${selectedRamIds}" />
+
+    <label for="computerName">Computer Name:</label>
+    <input type="text" id="computerName" name="computerName" required>
+    <button type="submit">Save Assembly</button>
+</form>
+
+</body>
+</html>

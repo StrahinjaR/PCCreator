@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>GPUs</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+<h1>GPUs</h1>
+<table>
+    <thead>
+    <tr>
+
+        <th>Name</th>
+        <th>Memory</th>
+        <th>Boost Clock (MHz)</th>
+        <th>Price ($)</th>
+        <th>Memory Type</th>
+        <th>Wattage (W)</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="motherboard : ${motherboards}">
+        <td th:text="${motherboard.name}">Naziv</td>
+        <td th:text="${motherboard.socket}">Memorija</td>
+        <td th:text="${motherboard.memoryMax}">Brzina</td>
+        <td th:text="${motherboard.memorySlots}">Cena</td>
+        <td th:text="${motherboard.price}+ '€'">Tip memorije</td>
+        <td th:text="${motherboard.wattage}+'W'">Napajanje</td>
+        <td>
+            <form th:action="@{assemble/pick_a_part/addMotherboard}" method="post">
+                <input type="hidden" name="motherboardId" th:value="${motherboard.id}" />
+                <input type="hidden" name="motherboardName" th:value="${motherboard.name}" />
+                <button type="submit">Add</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

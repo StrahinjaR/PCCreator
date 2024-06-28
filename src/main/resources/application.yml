@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    url: jdbc:mysql://racunaris.mysql.database.azure.com:3306/racunar?useSSL=true
+    username: racunari_baza
+    password: D1plomski
+    driver-class-name: "com.mysql.cj.jdbc.Driver"
