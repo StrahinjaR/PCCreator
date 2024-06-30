@@ -18,7 +18,8 @@ import java.util.List;
 @Controller
 @RequestMapping("assemble")
 @SessionAttributes({"selectedGpu", "selectedCpu", "selectedMotherboard", "selectedPsu", "selectedCase", "selectedCooler",
-        "selectedGpuId", "selectedCpuId", "selectedMotherboardId", "selectedPsuId", "selectedCaseId", "selectedCoolerId", "selectedStorageIds","selectedStorages","selectedRams","selectedRamIds"})
+        "selectedGpuId", "selectedCpuId", "selectedMotherboardId", "selectedPsuId", "selectedCaseId", "selectedCoolerId", "selectedStorageIds","selectedStorages","selectedRams","selectedRamIds"
+,"cpuPrice","gpuPrice","psuPrice","coolerPrice","motherboardPrice","storagePrice","ramPrice","casePrice"})
 public class PickAPartController {
 
     @Autowired
@@ -95,62 +96,72 @@ public class PickAPartController {
     }
 
     @PostMapping("/pick_a_part/addGpu")
-    public String addGpu(@RequestParam int gpuId,@RequestParam String gpuName, Model model) {
+    public String addGpu(@RequestParam int gpuId,@RequestParam String gpuName,@RequestParam int gpuPrice, Model model) {
         model.addAttribute("selectedGpu", gpuName); // You may want to replace this with the actual GPU name
         model.addAttribute("selectedGpuId", gpuId);
+        model.addAttribute("gpuPrice", gpuPrice);
         return "redirect:/assemble/pick_a_part";
     }
 
     @PostMapping("/pick_a_part/addCpu")
-    public String addCpu(@RequestParam int cpuId,@RequestParam String cpuName, Model model) {
+    public String addCpu(@RequestParam int cpuId,@RequestParam String cpuName,@RequestParam int cpuPrice, Model model) {
         model.addAttribute("selectedCpu", cpuName); // You may want to replace this with the actual GPU name
         model.addAttribute("selectedCpuId", cpuId);
+        model.addAttribute("cpuPrice", cpuPrice);
         return "redirect:/assemble/pick_a_part";
     }
     @PostMapping("/pick_a_part/addPsu")
-    public String addPsu(@RequestParam int psuId ,@RequestParam String psuName, Model model) {
+    public String addPsu(@RequestParam int psuId ,@RequestParam String psuName,@RequestParam int psuPrice, Model model) {
         model.addAttribute("selectedPsuId", psuId);
         model.addAttribute("selectedPsu", psuName);
+        model.addAttribute("psuPrice", psuPrice);
         return "redirect:/assemble/pick_a_part";
     }
     @PostMapping("/pick_a_part/addMotherboard")
-    public String addMotherboard(@RequestParam int motherboardId ,@RequestParam String motherboardName, Model model) {
+    public String addMotherboard(@RequestParam int motherboardId ,@RequestParam String motherboardName,@RequestParam int motherboardPrice, Model model) {
         model.addAttribute("selectedMotherboardId", motherboardId);
         model.addAttribute("selectedMotherboard", motherboardName);
+        model.addAttribute("motherboardPrice", motherboardPrice);
         return "redirect:/assemble/pick_a_part";
     }
     @PostMapping("/pick_a_part/addCase")
-    public String addCase(@RequestParam int caseId ,@RequestParam String caseName, Model model) {
+    public String addCase(@RequestParam int caseId ,@RequestParam String caseName,@RequestParam int casePrice, Model model) {
         model.addAttribute("selectedCaseId", caseId);
         model.addAttribute("selectedCase", caseName);
+        model.addAttribute("casePrice", casePrice);
         return "redirect:/assemble/pick_a_part";
     }
     @PostMapping("/pick_a_part/addCooler")
-    public String addCooler(@RequestParam int coolerId ,@RequestParam String coolerName, Model model) {
+    public String addCooler(@RequestParam int coolerId ,@RequestParam String coolerName,@RequestParam int coolerPrice, Model model) {
         model.addAttribute("selectedCoolerId", coolerId);
         model.addAttribute("selectedCooler", coolerName);
+        model.addAttribute("coolerPrice", coolerPrice);
         return "redirect:/assemble/pick_a_part";
     }
 
     @PostMapping("/pick_a_part/addStorage")
     public String addStorage(@RequestParam Long storageId,
                              @ModelAttribute("selectedStorageIds") List<Long> storageIds,
-                             @ModelAttribute("selectedStorages") List<String> storageNames) {
+                             @ModelAttribute("selectedStorages") List<String> storageNames
+                             /*@ModelAttribute("storagePrice") List<Integer> storagePrice*/) {
         Storage storage = storageService.findById(Math.toIntExact(storageId));
         if (storage != null) {
             storageIds.add(storageId);
             storageNames.add(storage.getName());
+         /*   storagePrice.add(storage.getPrice())*/;
         }
         return "redirect:/assemble/pick_a_part";
     }
     @PostMapping("/pick_a_part/addRam")
     public String addRam(@RequestParam Long ramId,
                              @ModelAttribute("selectedRamIds") List<Long> ramIds,
-                             @ModelAttribute("selectedRams") List<String> ramNames) {
+                             @ModelAttribute("selectedRams") List<String> ramNames)
+                            /* @ModelAttribute("ramPrice") List<Integer> ramPrice)*/ {
         RAM ram = ramService.findById(Math.toIntExact(ramId));
         if (ram != null) {
             ramIds.add(ramId);
             ramNames.add(ram.getName());
+          //  ramPrice.add(ram.getPrice());
         }
         return "redirect:/assemble/pick_a_part";
     }
@@ -163,6 +174,12 @@ public class PickAPartController {
                            @RequestParam int psuId,
                            @RequestParam int caseId,
                            @RequestParam int coolerId,
+                           @RequestParam int cpuPrice,
+                           @RequestParam int gpuPrice,
+                           @RequestParam int motherboardPrice,
+                           @RequestParam int psuPrice,
+                           @RequestParam int casePrice,
+                           @RequestParam int coolerPrice,
                            @RequestParam String computerName,
                            @ModelAttribute("selectedStorageIds") List<Long> storageIds,
                            @ModelAttribute("selectedRamIds") List<Long> ramIds,
@@ -176,7 +193,9 @@ public class PickAPartController {
             System.out.println("Case ID: " + caseId);
             System.out.println("Cooler ID: " + coolerId);
             System.out.println("Computer Name: " + computerName);
-
+            int brojac;
+            brojac=cpuPrice+motherboardPrice+psuPrice+casePrice+coolerPrice+gpuPrice;
+            System.out.println(brojac);
 
             assemble.setComputerName(computerName);
             assemble.setCpuId(cpuId);
@@ -191,12 +210,15 @@ public class PickAPartController {
             for (long storageId : storageIds) {
                 Storage storage = storageService.findById((int) storageId);
                 assemble.addStorage(storage);
+                brojac=brojac+storage.getPrice();
             }
             for (long ramId : ramIds) {
                 RAM ram = ramService.findById((int) ramId);
                 assemble.addRam(ram);
+                brojac=brojac+ram.getPrice();
             }
-
+            assemble.setTotalPrice(brojac);
+            System.out.println(brojac);
             assembleService.saveAssemble(assemble);
 
             sessionStatus.setComplete();

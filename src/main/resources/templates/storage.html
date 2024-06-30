@@ -32,6 +32,7 @@
         <td>
             <form th:action="@{/assemble/pick_a_part/addStorage}" method="post">
                 <input type="hidden" name="storageId" th:value="${storage.id}" />
+                <input type="hidden" name="storagePrice" th:value="${storage.price}" />
                 <button type="submit">Add</button>
             </form>
         </td>

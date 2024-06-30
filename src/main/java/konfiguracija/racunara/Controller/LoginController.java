@@ -48,10 +48,7 @@ public class LoginController {
 
     }
 
-    @GetMapping("/proba")
-    public String htmllink() {
-        return "nesme.html";
-    }
+
 
     @GetMapping("/login")
     String login() {

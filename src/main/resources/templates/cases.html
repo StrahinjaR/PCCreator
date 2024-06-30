@@ -27,6 +27,7 @@
             <form th:action="@{/assemble/pick_a_part/addCase}" method="post">
                 <input type="hidden" name="caseId" th:value="${case.id}" />
                 <input type="hidden" name="caseName" th:value="${case.name}" />
+                <input type="hidden" name="casePrice" th:value="${case.price}" />
                 <button type="submit">Dodaj/Izmeni</button>
             </form>
         </td>

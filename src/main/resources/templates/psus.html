@@ -30,6 +30,7 @@
             <form th:action="@{assemble/pick_a_part/addPsu}" method="post">
                 <input type="hidden" name="psuId" th:value="${psu.id}"/>
                 <input type="hidden" name="psuName" th:value="${psu.name}"/>
+                <input type="hidden" name="psuPrice" th:value="${psu.price}"/>
 
                 <button type="submit">Add</button>
             </form>

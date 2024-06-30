@@ -36,6 +36,14 @@
 </div>
 
 <form th:action="@{/assemble/save}" method="post">
+    <input type="hidden" name="gpuPrice" th:value="${gpuPrice}" />
+    <input type="hidden" name="cpuPrice" th:value="${cpuPrice}" />
+    <input type="hidden" name="motherboardPrice" th:value="${motherboardPrice}" />
+    <input type="hidden" name="psuPrice" th:value="${psuPrice}" />
+    <input type="hidden" name="casePrice" th:value="${casePrice}" />
+    <input type="hidden" name="coolerPrice" th:value="${coolerPrice}" />
+
+
     <input type="hidden" name="gpuId" th:value="${selectedGpuId}" />
     <input type="hidden" name="cpuId" th:value="${selectedCpuId}" />
     <input type="hidden" name="motherboardId" th:value="${selectedMotherboardId}" />
@@ -43,7 +51,7 @@
     <input type="hidden" name="caseId" th:value="${selectedCaseId}" />
     <input type="hidden" name="coolerId" th:value="${selectedCoolerId}" />
     <input type="hidden" name="storageIds" th:value="${selectedStorageIds}" />
-    <input type="hidden" name="storageIds" th:value="${selectedRamIds}" />
+    <input type="hidden" name="ramIds" th:value="${selectedRamIds}" />
 
     <label for="computerName">Computer Name:</label>
     <input type="text" id="computerName" name="computerName" required>

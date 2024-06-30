@@ -27,6 +27,7 @@
             <form th:action="@{/assemble/pick_a_part/addCooler}" method="post">
                 <input type="hidden" name="coolerId" th:value="${cooler.id}" />
                 <input type="hidden" name="coolerName" th:value="${cooler.name}" />
+                <input type="hidden" name="coolerPrice" th:value="${cooler.price}" />
                 <button type="submit">Add</button>
             </form>
         </td>

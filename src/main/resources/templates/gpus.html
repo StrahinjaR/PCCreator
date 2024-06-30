@@ -31,6 +31,7 @@
             <form th:action="@{assemble/pick_a_part/addGpu}" method="post">
                 <input type="hidden" name="gpuId" th:value="${gpu.ranking}" />
                 <input type="hidden" name="gpuName" th:value="${gpu.name}" />
+                <input type="hidden" name="gpuPrice" th:value="${gpu.price}" />
                 <button type="submit">Add</button>
             </form>
         </td>

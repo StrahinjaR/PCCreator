@@ -31,6 +31,7 @@
             <form th:action="@{assemble/pick_a_part/addMotherboard}" method="post">
                 <input type="hidden" name="motherboardId" th:value="${motherboard.id}" />
                 <input type="hidden" name="motherboardName" th:value="${motherboard.name}" />
+                <input type="hidden" name="motherboardPrice" th:value="${motherboard.price}" />
                 <button type="submit">Add</button>
             </form>
         </td>

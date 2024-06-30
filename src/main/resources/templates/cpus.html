@@ -33,6 +33,7 @@
             <form th:action="@{/assemble/pick_a_part/addCpu}" method="post">
                 <input type="hidden" name="cpuId" th:value="${cpu.ranking}" />
                 <input type="hidden" name="cpuName" th:value="${cpu.name}" />
+                <input type="hidden" name="cpuPrice" th:value="${cpu.price}" />
                 <button type="submit">Add</button>
             </form>
         </td>

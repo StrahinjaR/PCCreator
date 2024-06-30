@@ -19,6 +19,7 @@ public class Assemble {
     private int psuId;
     private int caseId;
     private int coolerId;
+    private int totalPrice;
 
     @OneToMany(mappedBy = "assemble", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<AssembleStorage> storages = new HashSet<>();
@@ -105,6 +106,14 @@ public class Assemble {
 
     public void setRams(Set<AssembleRam> rams) {
         this.rams = rams;
+    }
+
+    public int getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(int totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
     public void addStorage(Storage storage) {
