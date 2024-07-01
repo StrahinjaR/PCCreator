@@ -6,7 +6,6 @@ import java.util.Set;
 
 @Entity
 public class Assemble {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -14,8 +13,11 @@ public class Assemble {
     private String computerName;
 
     private int cpuId;
+
     private int gpuId;
+
     private int motherboardId;
+
     private int psuId;
     private int caseId;
     private int coolerId;
@@ -26,6 +28,8 @@ public class Assemble {
 
     @OneToMany(mappedBy = "assemble", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<AssembleRam> rams = new HashSet<>();
+
+    // Many-to-One mappings
 
 
     public long getId() {

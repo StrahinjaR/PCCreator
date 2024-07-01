@@ -6,7 +6,11 @@ import konfiguracija.racunara.Entity.Storage;
 import konfiguracija.racunara.Service.AssembleService;
 import konfiguracija.racunara.Service.RAMService;
 import konfiguracija.racunara.Service.StorageService;
+import konfiguracija.racunara.Service.UsersAssembleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +32,8 @@ public class PickAPartController {
     private StorageService storageService;
     @Autowired
     private RAMService ramService;
+    @Autowired
+    private UsersAssembleService usersAssembleService;
 
     @ModelAttribute("assemble")
     public Assemble getAssemble() {
@@ -93,6 +99,13 @@ public class PickAPartController {
             model.addAttribute("selectedRams", new ArrayList<String>());
         }
         return "pick_a_part";
+    }
+    public String getLoggedInUserDetails() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+            return authentication.getName();
+        }
+        return null;
     }
 
     @PostMapping("/pick_a_part/addGpu")
@@ -218,6 +231,11 @@ public class PickAPartController {
                 brojac=brojac+ram.getPrice();
             }
             assemble.setTotalPrice(brojac);
+            long assembleid= assemble.getId();
+            String username=getLoggedInUserDetails();
+            usersAssembleService.PCsForUser(username,assembleid);
+            System.out.println(assembleid);
+            System.out.println(username);
             System.out.println(brojac);
             assembleService.saveAssemble(assemble);
 
