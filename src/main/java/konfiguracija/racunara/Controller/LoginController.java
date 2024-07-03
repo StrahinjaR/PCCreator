@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping
@@ -44,8 +45,26 @@ public class LoginController {
         Users result = repo.save(ourUser);
 
         return ResponseEntity.ok("USer Was Saved");
+    }
+    @PostMapping("/register")
+    public String registerUser(
+            @RequestParam("username") String username,
+            @RequestParam("password") String password,
+            @RequestParam("email") String email,
+            RedirectAttributes redirectAttributes) {
 
-
+        String sifrovanasifra = passwordEncoder.encode(password);
+        try {
+            repo.saveUser(username, sifrovanasifra, email);
+            return "login"; // Uspesna registracija preusmerava na stranicu za prijavljivanje
+        } catch (Exception exception) {
+            redirectAttributes.addFlashAttribute("error", "Došlo je do greške prilikom registracije.");
+            return "redirect:/register?error=true";
+        }
+    }
+    @GetMapping("/register")
+    public String register(){
+        return "register";
     }
 
 

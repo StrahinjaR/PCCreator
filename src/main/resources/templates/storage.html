@@ -3,21 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <title>CPUs</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <link rel="stylesheet" th:href="@{/style.css}" />
 </head>
 <body>
-<h1>CPUs</h1>
-<table>
+<h1>Skladište</h1>
+<input type="text" id="searchBar" placeholder="Pronađi skladište...">
+<table id="ComponentTable">
     <thead>
     <tr>
-        <th>Name</th>
-        <th>Socket</th>
-        <th>Price ($)</th>
-        <th>Napajanje</th>
-        <th>Broj jezgara</th>
-        <th>Brzina</th>
-        <th>Integrisana grafička</th>
-        <th>Add</th>
+        <th>Naziv</th>
+        <th>Kapacitet</th>
+        <th>Tip</th>
+        <th>Konektor</th>
+        <th>Cena</th>
+        <th>Brzina čitanja</th>
+        <th>Brzina upisa</th>
+        <th>Dodaj</th>
     </tr>
     </thead>
     <tbody>
@@ -33,11 +34,12 @@
             <form th:action="@{/assemble/pick_a_part/addStorage}" method="post">
                 <input type="hidden" name="storageId" th:value="${storage.id}" />
                 <input type="hidden" name="storagePrice" th:value="${storage.price}" />
-                <button type="submit">Add</button>
+                <button type="submit">Dodaj</button>
             </form>
         </td>
     </tr>
     </tbody>
 </table>
+<script th:src="@{/script.js}"></script>
 </body>
 </html>

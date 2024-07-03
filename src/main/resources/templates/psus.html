@@ -3,20 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <title>GPUs</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <link rel="stylesheet" th:href="@{/style.css}" />
 </head>
 <body>
-<h1>GPUs</h1>
-<table>
+<h1>Napajanja</h1>
+<input type="text" id="searchBar" placeholder="Pronađi napajanje...">
+<table id="ComponentTable">
     <thead>
     <tr>
 
-        <th>Name</th>
-        <th>Memory</th>
-        <th>Boost Clock (MHz)</th>
-        <th>Price ($)</th>
-        <th>Memory Type</th>
-        <th>Wattage (W)</th>
+        <th>Naziv</th>
+        <th>Procenat efikasnosti</th>
+        <th>Snaga</th>
+        <th>Cena</th>
+        <th>Modularno</th>
+        <th>Dodaj</th>
     </tr>
     </thead>
     <tbody>
@@ -31,12 +32,13 @@
                 <input type="hidden" name="psuId" th:value="${psu.id}"/>
                 <input type="hidden" name="psuName" th:value="${psu.name}"/>
                 <input type="hidden" name="psuPrice" th:value="${psu.price}"/>
-
-                <button type="submit">Add</button>
+                <input type="hidden" name="psuWattage" th:value="${psu.wattage}"/>
+                <button type="submit">Dodaj</button>
             </form>
         </td>
     </tr>
     </tbody>
 </table>
+<script th:src="@{/script.js}"></script>
 </body>
 </html>

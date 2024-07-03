@@ -3,21 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <title>CPUs</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <link rel="stylesheet" th:href="@{/style.css}" />
 </head>
 <body>
 <h1>CPUs</h1>
-<table>
+<input type="text" id="searchBar" placeholder="Search for CPUs...">
+<table id="ComponentTable">
     <thead>
     <tr>
-        <th>Name</th>
+        <th>Naziv</th>
         <th>Socket</th>
-        <th>Price ($)</th>
+        <th>Cena ($)</th>
         <th>Napajanje</th>
         <th>Broj jezgara</th>
         <th>Brzina</th>
         <th>Integrisana grafička</th>
-        <th>Add</th>
+        <th>Dodaj</th>
     </tr>
     </thead>
     <tbody>
@@ -34,11 +35,13 @@
                 <input type="hidden" name="cpuId" th:value="${cpu.ranking}" />
                 <input type="hidden" name="cpuName" th:value="${cpu.name}" />
                 <input type="hidden" name="cpuPrice" th:value="${cpu.price}" />
-                <button type="submit">Add</button>
+                <input type="hidden" name="cpuWattage" th:value="${cpu.wattage}" />
+                <button type="submit">Dodaj</button>
             </form>
         </td>
     </tr>
     </tbody>
 </table>
+<script th:src="@{/script.js}"></script>
 </body>
 </html>

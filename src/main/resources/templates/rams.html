@@ -3,21 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title>CPUs</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <link rel="stylesheet" th:href="@{/style.css}" />
 </head>
 <body>
-<h1>CPUs</h1>
-<table>
+<h1>Memorije</h1>
+<input type="text" id="searchBar" placeholder="Pronađi memoriju...">
+<table id="ComponentTable">
     <thead>
     <tr>
-        <th>Name</th>
-        <th>Socket</th>
-        <th>Price ($)</th>
-        <th>Napajanje</th>
-        <th>Broj jezgara</th>
-        <th>Brzina</th>
-        <th>Integrisana grafička</th>
-        <th>Add</th>
+        <th>Naziv</th>
+        <th>Brzina memorije</th>
+        <th>Cena</th>
+        <th>Kapacitet</th>
+        <th>Latencija</th>
+        <th>Dodaj</th>
     </tr>
     </thead>
     <tbody>
@@ -31,11 +30,12 @@
             <form th:action="@{/assemble/pick_a_part/addRam}" method="post">
                 <input type="hidden" name="ramId" th:value="${ram.id}" />
                 <input type="hidden" name="ramPrice" th:value="${ram.price}" />
-                <button type="submit">Add</button>
+                <button type="submit">Dodaj</button>
             </form>
         </td>
     </tr>
     </tbody>
 </table>
+<script th:src="@{/script.js}"></script>
 </body>
 </html>

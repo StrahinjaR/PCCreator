@@ -3,18 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>CPUs</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <link rel="stylesheet" th:href="@{/style.css}" />
 </head>
 <body>
 <h1>CPUs</h1>
-<table>
+<input type="text" id="searchBar" placeholder="Search for CPUs...">
+<table id="ComponentTable">
     <thead>
     <tr>
         <th>Naziv</th>
-        <th>Brzina fena</th>
-        <th>Price ($)</th>
+        <th>Brzina obrtaja</th>
+        <th>Nivo buke(db)</th>
         <th>Cena</th>
-        <th>Add</th>
+        <th>Dodaj</th>
     </tr>
     </thead>
     <tbody>
@@ -28,11 +29,12 @@
                 <input type="hidden" name="coolerId" th:value="${cooler.id}" />
                 <input type="hidden" name="coolerName" th:value="${cooler.name}" />
                 <input type="hidden" name="coolerPrice" th:value="${cooler.price}" />
-                <button type="submit">Add</button>
+                <button type="submit">Dodaj</button>
             </form>
         </td>
     </tr>
     </tbody>
 </table>
+<script th:src="@{/script.js}"></script>
 </body>
 </html>

@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>CPUs</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <link rel="stylesheet" th:href="@{/style.css}" />
 </head>
 <body>
 <h1>CPUs</h1>
-<table>
+<input type="text" id="searchBar" placeholder="Search for CPUs...">
+<table id="ComponentTable">
     <thead>
     <tr>
         <th>Naziv</th>
@@ -28,11 +29,12 @@
                 <input type="hidden" name="caseId" th:value="${case.id}" />
                 <input type="hidden" name="caseName" th:value="${case.name}" />
                 <input type="hidden" name="casePrice" th:value="${case.price}" />
-                <button type="submit">Dodaj/Izmeni</button>
+                <button type="submit">Dodaj</button>
             </form>
         </td>
     </tr>
     </tbody>
 </table>
+<script th:src="@{/script.js}"></script>
 </body>
 </html>

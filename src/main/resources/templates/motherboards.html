@@ -3,20 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <title>GPUs</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <link rel="stylesheet" th:href="@{/style.css}" />
 </head>
 <body>
-<h1>GPUs</h1>
-<table>
+<h1>Matične ploče</h1>
+<input type="text" id="searchBar" placeholder="Pronađi matičnu...">
+<table id="ComponentTable">
     <thead>
     <tr>
 
-        <th>Name</th>
-        <th>Memory</th>
-        <th>Boost Clock (MHz)</th>
-        <th>Price ($)</th>
-        <th>Memory Type</th>
-        <th>Wattage (W)</th>
+        <th>Naziv</th>
+        <th>Soket</th>
+        <th>Maksimalna količina memorije</th>
+        <th>Memorijski slotovi</th>
+        <th>Tip memorije</th>
+        <th>Cena</th>
+        <th>Napajanje</th>
     </tr>
     </thead>
     <tbody>
@@ -25,6 +27,7 @@
         <td th:text="${motherboard.socket}">Memorija</td>
         <td th:text="${motherboard.memoryMax}">Brzina</td>
         <td th:text="${motherboard.memorySlots}">Cena</td>
+        <td th:text="${motherboard.ddrType}">Tip memorije</td>
         <td th:text="${motherboard.price}+ '€'">Tip memorije</td>
         <td th:text="${motherboard.wattage}+'W'">Napajanje</td>
         <td>
@@ -32,11 +35,14 @@
                 <input type="hidden" name="motherboardId" th:value="${motherboard.id}" />
                 <input type="hidden" name="motherboardName" th:value="${motherboard.name}" />
                 <input type="hidden" name="motherboardPrice" th:value="${motherboard.price}" />
-                <button type="submit">Add</button>
+                <input type="hidden" name="motherboardWattage" th:value="${motherboard.wattage}" />
+                <input type="hidden" name="motherboardMemorySlots" th:value="${motherboard.memorySlots}" />
+                <button type="submit">Dodaj</button>
             </form>
         </td>
     </tr>
     </tbody>
 </table>
+<script th:src="@{/script.js}"></script>
 </body>
 </html>

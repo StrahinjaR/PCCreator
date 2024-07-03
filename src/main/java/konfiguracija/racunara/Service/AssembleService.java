@@ -34,4 +34,21 @@ public class AssembleService {
                 (String) result[8],
                 (String) result[9]
         )).collect(Collectors.toList());
-}}
+}
+    public List<AssembledComputerDto> getAssembledComputersById() {
+        List<Object[]> results = repository.findAssembledComputersByUsername();
+
+        return results.stream().map(result -> new AssembledComputerDto(
+                ((Number) result[0]).longValue(),
+                (String) result[1],
+                (String) result[2],
+                (String) result[3],
+                (String) result[4],
+                (String) result[5],
+                (String) result[6],
+                (String) result[7],
+                (String) result[8],
+                (String) result[9]
+        )).collect(Collectors.toList());
+    }
+}

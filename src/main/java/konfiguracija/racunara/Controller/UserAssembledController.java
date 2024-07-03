@@ -33,5 +33,11 @@ public class UserAssembledController {
         return "user_assembles";
 
     }
+    @GetMapping("AAAA")
+    public String getAssembledForId(Model model){
+        List<AssembledComputerDto> assembles = assembleService.getAssembledComputersById();
+        model.addAttribute("assembles", assembles);
+        return "recommendedpcs";
+    }
 
 }

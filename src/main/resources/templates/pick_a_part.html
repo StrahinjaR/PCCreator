@@ -7,6 +7,11 @@
 <body>
 <h1>Pick Your PC Components</h1>
 
+<div th:if="${error}" class="alert alert-danger" th:text="${error}"> <p> Test</p></div>
+<div th:if="${wattageError}" class="alert alert-danger" th:text="${wattageError}"> <p> Test</p></div>
+<div th:if="${bottleneckWarning}" class="alert alert-danger" th:text="${bottleneckWarning}"> <p> Test</p></div>
+<div th:if="${ramMotherboardError}" class="alert alert-danger" th:text="${ramMotherboardError}"> <p> Test</p></div>
+<div th:if="${memoryError}" class="alert alert-danger" th:text="${memoryError}"> <p> Test</p></div>
 <div>
     <h2>Selected Components</h2>
     <ul>

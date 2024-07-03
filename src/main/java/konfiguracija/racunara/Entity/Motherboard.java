@@ -19,6 +19,7 @@ public class Motherboard {
     private int memoryMax;
 
     private int memorySlots;
+    private String  ddrType;
 
     private int price;
 
@@ -26,12 +27,13 @@ public class Motherboard {
 
     public Motherboard(){}
 
-    public Motherboard(int id, String name, String socket, int memoryMax, int memorySlots, int price, int wattage) {
+    public Motherboard(int id, String name, String socket, int memoryMax, int memorySlots,String ddrType, int price, int wattage) {
         this.id = id;
         this.name = name;
         this.socket = socket;
         this.memoryMax = memoryMax;
         this.memorySlots = memorySlots;
+        this.ddrType=ddrType;
         this.price = price;
         this.wattage = wattage;
     }
@@ -74,6 +76,14 @@ public class Motherboard {
 
     public void setMemorySlots(int memorySlots) {
         this.memorySlots = memorySlots;
+    }
+
+    public String getDdrType() {
+        return ddrType;
+    }
+
+    public void setDdrType(String ddrType) {
+        this.ddrType = ddrType;
     }
 
     public int getPrice() {
