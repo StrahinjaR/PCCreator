@@ -15,28 +15,32 @@
 <div>
     <h2>Selected Components</h2>
     <ul>
-        <li>GPU: <span th:text="${selectedGpu}">None</span> <a th:href="@{/gpus}">Change</a></li>
-        <li>CPU: <span th:text="${selectedCpu}">None</span> <a th:href="@{/cpus}">Change</a></li>
-        <li>Motherboard: <span th:text="${selectedMotherboard}">None</span> <a th:href="@{/motherboards}">Change</a></li>
-        <li>PSU: <span th:text="${selectedPsu}">None</span> <a th:href="@{/psus}">Change</a></li>
-        <li>Case: <span th:text="${selectedCase}">None</span> <a th:href="@{/cases}">Change</a></li>
-        <li>Cooler: <span th:text="${selectedCooler}">None</span> <a th:href="@{/coolers}">Change</a></li>
+        <li>GPU: <span th:text="${selectedGpu}">None</span> <a th:href="@{/gpus}">Change</a>   <span th:text="${gpuPrice != null ? gpuPrice + ' €' : ''}"></span></li>
+        <li>CPU: <span th:text="${selectedCpu}">None</span> <a th:href="@{/cpus}">Change</a>  <span th:text="${cpuPrice != null ? cpuPrice + ' €' : ''}"></span></li>
+        <li>Motherboard: <span th:text="${selectedMotherboard}">None</span> <a th:href="@{/motherboards}">Change</a>  <span th:text="${motherboardPrice != null ? motherboardPrice + ' €' : ''}"></span></li>
+        <li>PSU: <span th:text="${selectedPsu}">None</span> <a th:href="@{/psus}">Change</a>  <span th:text="${psuPrice != null ? psuPrice + ' €' : ''}"></span></li>
+        <li>Case: <span th:text="${selectedCase}">None</span> <a th:href="@{/cases}">Change</a>  <span th:text="${casePrice != null ? casePrice + ' €' : ''}"></span></li>
+        <li>Cooler: <span th:text="${selectedCooler}">None</span> <a th:href="@{/coolers}">Change</a>  <span th:text="${coolerPrice != null ? coolerPrice + ' €' : ''}"></span></li>
         <li>Storage:
             <ul>
-                <li th:each="storage : ${selectedStorages}">
+                <li th:each="storage, iterStat : ${selectedStorages}">
                     <span th:text="${storage}"></span>
+                    <span th:text="${storagePrice[iterStat.index]} + ' €'  "></span>
                 </li>
             </ul>
             <a th:href="@{/storage}">Add Storage</a>
         </li>
         <li>Ram:
             <ul>
-                <li th:each="ram : ${selectedRams}">
+                <li th:each="ram, iterStat : ${selectedRams}">
                     <span th:text="${ram}"></span>
+                    <span th:text="${ramPrice[iterStat.index]} + ' €'"></span>
                 </li>
             </ul>
             <a th:href="@{/rams}">Add ram</a>
         </li>
+
+
     </ul>
 </div>
 

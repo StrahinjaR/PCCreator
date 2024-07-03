@@ -93,11 +93,17 @@ public class PickAPartController {
         if (!model.containsAttribute("selectedStorages")) {
             model.addAttribute("selectedStorages", new ArrayList<String>());
         }
+        if (!model.containsAttribute("storagePrice")) {
+            model.addAttribute("storagePrice", new ArrayList<Integer>());
+        }
         if (!model.containsAttribute("selectedRamIds")) {
             model.addAttribute("selectedRamIds", new ArrayList<Long>());
         }
         if (!model.containsAttribute("selectedRams")) {
             model.addAttribute("selectedRams", new ArrayList<String>());
+        }
+        if (!model.containsAttribute("ramPrice")) {
+            model.addAttribute("ramPrice", new ArrayList<Integer>());
         }
         return "pick_a_part";
     }
@@ -193,29 +199,32 @@ public class PickAPartController {
     @PostMapping("/pick_a_part/addStorage")
     public String addStorage(@RequestParam Long storageId,
                              @ModelAttribute("selectedStorageIds") List<Long> storageIds,
-                             @ModelAttribute("selectedStorages") List<String> storageNames
-                             /*@ModelAttribute("storagePrice") List<Integer> storagePrice*/) {
+                             @ModelAttribute("selectedStorages") List<String> storageNames,
+                             @ModelAttribute("storagePrice") List<Integer> storagePrice) {
         Storage storage = storageService.findById(Math.toIntExact(storageId));
         if (storage != null) {
             storageIds.add(storageId);
             storageNames.add(storage.getName());
-         /*   storagePrice.add(storage.getPrice())*/;
+          storagePrice.add(storage.getPrice());
         }
         return "redirect:/assemble/pick_a_part";
     }
     @PostMapping("/pick_a_part/addRam")
     public String addRam(@RequestParam Long ramId,
-                             @ModelAttribute("selectedRamIds") List<Long> ramIds,
-                             @ModelAttribute("selectedRams") List<String> ramNames)
-                            /* @ModelAttribute("ramPrice") List<Integer> ramPrice)*/ {
+                         @ModelAttribute("selectedRamIds") List<Long> ramIds,
+                         @ModelAttribute("selectedRams") List<String> ramNames,
+                         @ModelAttribute("ramPrice") List<Integer> ramPrice) {
         RAM ram = ramService.findById(Math.toIntExact(ramId));
         if (ram != null) {
             ramIds.add(ramId);
             ramNames.add(ram.getName());
-          //  ramPrice.add(ram.getPrice());
+            ramPrice.add(ram.getPrice());
         }
         return "redirect:/assemble/pick_a_part";
     }
+
+
+
 
     @PostMapping("/save")
     public String assemble(
