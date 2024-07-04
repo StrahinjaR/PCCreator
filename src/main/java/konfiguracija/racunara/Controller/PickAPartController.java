@@ -1,5 +1,6 @@
 package konfiguracija.racunara.Controller;
 
+import jakarta.servlet.http.HttpSession;
 import konfiguracija.racunara.Entity.Assemble;
 import konfiguracija.racunara.Entity.RAM;
 import konfiguracija.racunara.Entity.Storage;
@@ -21,7 +22,7 @@ import java.util.List;
 @RequestMapping("assemble")
 @SessionAttributes({"selectedGpu", "selectedCpu", "selectedMotherboard", "selectedPsu", "selectedCase", "selectedCooler",
         "selectedGpuId", "selectedCpuId", "selectedMotherboardId", "selectedPsuId", "selectedCaseId", "selectedCoolerId", "selectedStorageIds","selectedStorages","selectedRams","selectedRamIds"
-,"cpuPrice","gpuPrice","psuPrice","coolerPrice","motherboardPrice","storagePrice","ramPrice","casePrice"})
+,"cpuPrice","gpuPrice","psuPrice","coolerPrice","motherboardPrice","storagePrice","ramPrice","casePrice","error","wattageError","memoryError","ramMotherboardError","bottleneckWarning","MotherboardMemorySlots","Counter","notsameError"})
 public class PickAPartController {
 
     @Autowired
@@ -50,24 +51,24 @@ public class PickAPartController {
     {return new ArrayList<>();}
 
     @GetMapping("/pick_a_part")
-    public String pickAPart(Model model, RedirectAttributes redirectAttributes) {
+    public String pickAPart(Model model, RedirectAttributes redirectAttributes, HttpSession session) {
         if (!model.containsAttribute("selectedGpu")) {
-            model.addAttribute("selectedGpu", "None");
+            model.addAttribute("selectedGpu", "-");
         }
         if (!model.containsAttribute("selectedCpu")) {
-            model.addAttribute("selectedCpu", "None");
+            model.addAttribute("selectedCpu", "-");
         }
         if (!model.containsAttribute("selectedMotherboard")) {
-            model.addAttribute("selectedMotherboard", "None");
+            model.addAttribute("selectedMotherboard", "-");
         }
         if (!model.containsAttribute("selectedPsu")) {
-            model.addAttribute("selectedPsu", "None");
+            model.addAttribute("selectedPsu", "-");
         }
         if (!model.containsAttribute("selectedCase")) {
-            model.addAttribute("selectedCase", "None");
+            model.addAttribute("selectedCase", "-");
         }
         if (!model.containsAttribute("selectedCooler")) {
-            model.addAttribute("selectedCooler", "None");
+            model.addAttribute("selectedCooler", "-");
         }
         if (!model.containsAttribute("selectedGpuId")) {
             model.addAttribute("selectedGpuId", 0);
@@ -105,6 +106,14 @@ public class PickAPartController {
         if (!model.containsAttribute("ramPrice")) {
             model.addAttribute("ramPrice", new ArrayList<Integer>());
         }
+        if (!model.containsAttribute("Counter")) {
+            model.addAttribute("Counter", 0);
+        }
+        if (!model.containsAttribute("MotherboardMemorySlots")) {
+            model.addAttribute("MotherboardMemorySlots", 0);
+        }
+
+
         return "pick_a_part";
     }
     public String getLoggedInUserDetails() {
@@ -116,14 +125,17 @@ public class PickAPartController {
     }
 
     @PostMapping("/pick_a_part/addGpu")
-    public String addGpu(@RequestParam int gpuId,@RequestParam String gpuName,@RequestParam int gpuPrice, Model model, RedirectAttributes redirectAttributes) {
+    public String addGpu(@RequestParam int gpuId,@RequestParam String gpuName,@RequestParam int gpuPrice, Model model) {
         Integer selectedMotherboardIdd = (Integer) model.getAttribute("selectedMotherboardId");
         Integer selectedCpuIdd = (Integer) model.getAttribute("selectedCpuId");
         Integer selectedPsuIdd = (Integer) model.getAttribute("selectedPsuId");
         if(selectedPsuIdd!=0 && selectedCpuIdd!=0 && selectedMotherboardIdd !=0 && compabilityService.isWattageEnough(selectedCpuIdd,gpuId,selectedMotherboardIdd,selectedPsuIdd))
-        {redirectAttributes.addFlashAttribute("wattageError","Preslabo napajanje izaberite drugo!");}
+        {model.addAttribute("wattageError","Preslabo napajanje izaberite drugo!");}
+        else model.addAttribute("error","Ne");
         if( selectedCpuIdd!=0 && compabilityService.isGpuBottleneck(selectedCpuIdd, gpuId))
-        {redirectAttributes.addFlashAttribute("bottleneckWarning","Postoji mogućnost od bottleneck-a! Izaberite bolju grafičku kartu");}
+        {model.addAttribute("bottleneckWarning","Postoji mogućnost od bottleneck-a! Izaberite bolju grafičku kartu");}
+        else model.addAttribute("bottleneckWarning","Ne");
+
         model.addAttribute("selectedGpu", gpuName);
         model.addAttribute("selectedGpuId", gpuId);
         model.addAttribute("gpuPrice", gpuPrice);
@@ -131,54 +143,74 @@ public class PickAPartController {
     }
 
     @PostMapping("/pick_a_part/addCpu")
-    public String addCpu(@RequestParam int cpuId, @RequestParam String cpuName, @RequestParam int cpuPrice, Model model, RedirectAttributes redirectAttributes ) {
+    public String addCpu(@RequestParam int cpuId, @RequestParam String cpuName, @RequestParam int cpuPrice, Model model ) {
         Integer selectedMotherboardIdd = (Integer) model.getAttribute("selectedMotherboardId");
         Integer selectedGpuIdd = (Integer) model.getAttribute("selectedGpuId");
         Integer selectedPsuIdd = (Integer) model.getAttribute("selectedPsuId");
+
         if (selectedMotherboardIdd != 0 && !compabilityService.isSocketCompatible(cpuId, selectedMotherboardIdd))
-        {redirectAttributes.addFlashAttribute("error", "Selected CPU and Motherboard are not compatible.");}
+        {model.addAttribute("error", "Procesor i matična nisu kompatabilni!");}
+        else model.addAttribute("error","Ne");
         if(selectedPsuIdd!=0 && selectedMotherboardIdd !=0 && selectedGpuIdd!=0 && compabilityService.isWattageEnough(cpuId,selectedGpuIdd,selectedMotherboardIdd,selectedPsuIdd))
-        {redirectAttributes.addFlashAttribute("wattageError","Preslabo napajanje izaberite drugo!");}
+        {model.addAttribute("wattageError","Preslabo napajanje izaberite drugo!");}
+        else model.addAttribute("wattageError","Ne");
         if( selectedGpuIdd!=0 && compabilityService.isCpuBottleneck(cpuId, selectedGpuIdd))
-        {redirectAttributes.addFlashAttribute("bottleneckWarning","Postoji mogućnost od bottleneck-a! Izaberite bolji procesor");}
+        {model.addAttribute("bottleneckWarning","Postoji mogućnost od bottleneck-a! Izaberite bolji procesor");}
+        else model.addAttribute("bottleneckWarning","Ne");
+
         model.addAttribute("selectedCpu", cpuName);
         model.addAttribute("selectedCpuId", cpuId);
         model.addAttribute("cpuPrice", cpuPrice);
         return "redirect:/assemble/pick_a_part";
     }
     @PostMapping("/pick_a_part/addPsu")
-    public String addPsu(@RequestParam int psuId ,@RequestParam String psuName,@RequestParam int psuPrice, Model model,RedirectAttributes redirectAttributes) {
+    public String addPsu(@RequestParam int psuId ,@RequestParam String psuName,@RequestParam int psuPrice, Model model) {
         Integer selectedMotherboardIdd = (Integer) model.getAttribute("selectedMotherboardId");
         Integer selectedGpuIdd = (Integer) model.getAttribute("selectedGpuId");
         Integer selectedCpuIdd = (Integer) model.getAttribute("selectedCpuId");
+
         if(selectedCpuIdd!=0 && selectedMotherboardIdd !=0 && selectedGpuIdd!=0 && compabilityService.isWattageEnough(selectedCpuIdd,selectedGpuIdd,selectedMotherboardIdd,psuId))
-        {redirectAttributes.addFlashAttribute("wattageError","Preslabo napajanje izaberite drugo!");}
+        {model.addAttribute("wattageError","Preslabo napajanje izaberite drugo!");}
+        else model.addAttribute("wattageError","Ne");
+
         model.addAttribute("selectedPsuId", psuId);
         model.addAttribute("selectedPsu", psuName);
         model.addAttribute("psuPrice", psuPrice);
         return "redirect:/assemble/pick_a_part";
     }
     @PostMapping("/pick_a_part/addMotherboard")
-    public String addMotherboard(@RequestParam int motherboardId ,@RequestParam String motherboardName,@RequestParam int motherboardPrice,@RequestParam int motherboardMemorySlots ,Model model, RedirectAttributes redirectAttributes) {
+    public String addMotherboard(@RequestParam int motherboardId ,@RequestParam String motherboardName,@RequestParam int motherboardPrice,@RequestParam int motherboardMemorySlots ,Model model) {
         Integer selectedCpuIdd=(Integer) model.getAttribute("selectedCpuId");
         Integer selectedGpuIdd = (Integer) model.getAttribute("selectedGpuId");
         Integer selectedPsuIdd = (Integer) model.getAttribute("selectedPsuId");
         List<Long> selectedRamIds = (List<Long>) model.getAttribute("selectedRamIds");
-        if(selectedCpuIdd!=0 && !compabilityService.isSocketCompatible(selectedCpuIdd,motherboardId))
-        {redirectAttributes.addFlashAttribute("error", "Selected CPU and Motherboard are not compatible.");}
-        if(selectedCpuIdd!=0 && selectedPsuIdd !=0 && selectedGpuIdd!=0 && compabilityService.isWattageEnough(selectedCpuIdd,selectedGpuIdd,motherboardId,selectedPsuIdd))
-        {redirectAttributes.addFlashAttribute("wattageError","Preslabo napajanje izaberite drugo!");}
-        if(selectedRamIds.size()/2>motherboardMemorySlots)
-        {redirectAttributes.addFlashAttribute("memoryError","Previše ramova premalo mesta !");}
+        if (selectedCpuIdd != 0 && !compabilityService.isSocketCompatible(selectedCpuIdd, motherboardId)) {
+            model.addAttribute("error", "Procesor i matična nisu kompatabilni!");
+        }
+        else model.addAttribute("error","Ne");
+
+        if (selectedCpuIdd != 0 && selectedPsuIdd != 0 && selectedGpuIdd != 0 &&
+                compabilityService.isWattageEnough(selectedCpuIdd, selectedGpuIdd, motherboardId, selectedPsuIdd)) {
+            model.addAttribute("wattageError", "Preslabo napajanje izaberite drugo!");
+        }
+        else model.addAttribute("wattageError","Ne");
+        if (selectedRamIds.size() * 2 >= motherboardMemorySlots) {
+            model.addAttribute("memoryError", "Nema dovoljno mesta na matičnoj za RAM, izbrišite neku dodatu memoriju!");
+        }
+        else model.addAttribute("memoryError","Ne");
+
+
         for (Long ramId : selectedRamIds) {
             if (ramId != 0 && !compabilityService.isRamMBCompatible(ramId, motherboardId)) {
-                redirectAttributes.addFlashAttribute("ramMotherboardError", "RAM i matična nisu kompatibilni!");
+                model.addAttribute("ramMotherboardError", "RAM i matična nisu kompatibilni!");
                 break;
             }
+            else model.addAttribute("ramMotherboardError","Ne");
         }
         model.addAttribute("selectedMotherboardId", motherboardId);
         model.addAttribute("selectedMotherboard", motherboardName);
         model.addAttribute("motherboardPrice", motherboardPrice);
+        model.addAttribute("MotherboardMemorySlots",motherboardMemorySlots);
         return "redirect:/assemble/pick_a_part";
     }
     @PostMapping("/pick_a_part/addCase")
@@ -213,25 +245,57 @@ public class PickAPartController {
     public String addRam(@RequestParam Long ramId,
                          @ModelAttribute("selectedRamIds") List<Long> ramIds,
                          @ModelAttribute("selectedRams") List<String> ramNames,
-                         @ModelAttribute("ramPrice") List<Integer> ramPrice) {
+                         @ModelAttribute("ramPrice") List<Integer> ramPrice,
+                         Model model) {
+        Integer selectedMotherboardIdd = (Integer) model.getAttribute("selectedMotherboardId");
+        Integer brojac=(Integer) model.getAttribute("Counter");
         RAM ram = ramService.findById(Math.toIntExact(ramId));
         if (ram != null) {
             ramIds.add(ramId);
             ramNames.add(ram.getName());
             ramPrice.add(ram.getPrice());
         }
+        int br=0;
+         br=brojac;
+         br++;
+        model.addAttribute("Counter",br);
+        System.out.println(br);
+        for (Long selectedRamId : ramIds) {
+            if (selectedMotherboardIdd != 0 && !compabilityService.isRamMBCompatible(selectedRamId, selectedMotherboardIdd)) {
+                model.addAttribute("ramMotherboardError", "RAM i matična nisu kompatibilni!");
+            }
+            else model.addAttribute("ramMotherboardError","Ne");
+
+        }
+        Integer selectedMotherboardMemorySlots=(Integer) model.getAttribute("MotherboardMemorySlots");
+
+        if (selectedMotherboardMemorySlots !=0 && br * 2 > selectedMotherboardMemorySlots) {
+            model.addAttribute("memoryError", "Nema dovoljno mesta na matičnoj za RAM, izbrišite neku dodatu memoriju!");
+        }
+        else model.addAttribute("memoryError","Ne");
+       if(compabilityService.isRamSame(ramIds)){
+           model.addAttribute("notsameError", "Memorije nisu istog tipa!");}
+
+        else model.addAttribute("notsameError","Ne");
+
+
         return "redirect:/assemble/pick_a_part";
     }
     @PostMapping("/pick_a_part/removeRam")
     public String removeRam(@RequestParam("index") int index,
                             @ModelAttribute("selectedRamIds") List<Long> ramIds,
                             @ModelAttribute("selectedRams") List<String> ramNames,
-                            @ModelAttribute("ramPrice") List<Integer> ramPrices) {
+                            @ModelAttribute("ramPrice") List<Integer> ramPrices,
+                            Model model) {
         if (index >= 0 && index < ramIds.size()) {
             ramIds.remove(index);
             ramNames.remove(index);
             ramPrices.remove(index);
         }
+        Integer brojac=(Integer) model.getAttribute("Counter");
+        brojac--;
+        model.addAttribute("Counter",brojac);
+
         return "redirect:/assemble/pick_a_part";
     }
     @PostMapping("/pick_a_part/removeStorage")
@@ -312,7 +376,7 @@ public class PickAPartController {
             assembleService.saveAssemble(assemble);
 
             sessionStatus.setComplete();
-            return "redirect:/assemble/pick_a_part";
+            return "redirect:/assembled";
         }
         catch (Exception ex)
 

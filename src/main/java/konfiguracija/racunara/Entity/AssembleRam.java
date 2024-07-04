@@ -5,31 +5,31 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "assemble_ram")
 public class AssembleRam {
-    @EmbeddedId
-    private AssembleRamId id=new AssembleRamId();
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @ManyToOne
-    @MapsId("assembleId")
+
     @JoinColumn(name = "assemble_id")
     private Assemble assemble;
 
     @ManyToOne
-    @MapsId("ramId")
+
     @JoinColumn(name = "ram_id")
     private RAM ram;
 
     public AssembleRam(){}
     public AssembleRam(Assemble assemble, RAM ram) {
-        this.id = new AssembleRamId((Long) assemble.getId(), (Long) ram.getId());
         this.assemble = assemble;
         this.ram = ram;
     }
 
-    public AssembleRamId getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(AssembleRamId id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

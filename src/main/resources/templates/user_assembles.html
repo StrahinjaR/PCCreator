@@ -1,75 +1,125 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <title>User Assembles</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-             background-image: url("https://i.pinimg.com/originals/9e/ec/3c/9eec3cd5c2a2064be3005409dca25f01.jpg");
-             background-size: cover;
-             background-repeat: no-repeat;
-            margin: 0;
-        }
+        .navbar {
+    background-color: #6c757d;
+    border-bottom: 1px solid #dee2e6;
+}
 
-        .card-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
-            max-width: 1000px;
-        }
+.navbar-brand {
+    font-weight: bold;
+    color: #ffffff;
+}
 
-        .card {
-            background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            width: calc(33.33% - 20px); /* Three cards per row */
-            max-width: 280px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
+.navbar-nav .nav-link {
+    color: #ffffff;
+}
 
-        .card img {
-            width: 100%;
-            border-radius: 8px;
-            margin-bottom: 15px;
-        }
+.navbar-nav .nav-link:hover {
+    color: #f8f9fa;
+}
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
 
-        .card h2 {
-            color: #333333;
-            margin-bottom: 10px;
-        }
 
-        .computer-info p {
-            margin: 5px 0;
-        }
+    align-items: center;
+     background-image: url("https://i.pinimg.com/originals/9e/ec/3c/9eec3cd5c2a2064be3005409dca25f01.jpg");
+     background-size: cover;
+     background-repeat: no-repeat;
+    margin: 0;
+}
 
-        .computer-info span {
-            font-weight: bold;
-            color: #007bff;
-        }
+.card-container {
+
+margin-top:20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+
+}
+
+.card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: calc(33.33% - 20px); /* Three cards per row */
+    max-width: 280px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.card img {
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.card h2 {
+    color: #333333;
+    margin-bottom: 10px;
+}
+
+.computer-info p {
+    margin: 5px 0;
+}
+
+.computer-info span {
+    font-weight: bold;
+    color: #007bff;
+}
+        h1{
+        text-align:center;}
     </style>
 </head>
 <body>
-<div class="card-container">
+<!-- Navbar content -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" th:href="@{/}">Konfigurator</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/RecommendedBuild}">Preporučene konfiguracije</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/assembled}">Sačuvane konfiguracije</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="logout" sec:authorize="isAuthenticated()" >Odjavite se</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/assemble/pick_a_part}" sec:authorize="!isAuthenticated()" >Prijavite se</a>
+            </li>
+            <!-- Add more navigation links as needed -->
+        </ul>
+    </div>
+</nav>
+<h1 > Vaše sačuvane konfiguracije:</h1>
+<div class="card-container" >
     <div th:each="assemble, iterStat : ${assembles}" class="card">
         <img th:if="${iterStat.index % 3 == 0}" src="https://img.gigatron.rs/img/products/large/image655b0c165672e.jpg" alt="Assembled PC Image">
         <img th:if="${iterStat.index % 3 == 1}" src="https://img.gigatron.rs/img/products/large/image65dd8d4fd420c.jpg" alt="Assembled PC Image">
         <img th:if="${iterStat.index % 3 == 2}" src="https://img.gigatron.rs/img/products/large/image65d47d651b850.jpg" alt="Assembled PC Image">
         <h2 th:text="${assemble.computerName}">Computer Name</h2>
         <div class="computer-info">
-            <p>CPU: <span th:text="${assemble.cpuName}">CPU Name</span></p>
-            <p>GPU: <span th:text="${assemble.gpuName}">GPU Name</span></p>
-            <p>Motherboard: <span th:text="${assemble.motherboardName}">Motherboard Name</span></p>
-            <p>PSU: <span th:text="${assemble.psuName}">PSU Name</span></p>
-            <p>Case: <span th:text="${assemble.caseName}">Case Name</span></p>
-            <p>Cooler: <span th:text="${assemble.coolerName}">Cooler Name</span></p>
-            <p>Storage:
+            <p>Procesor: <span th:text="${assemble.cpuName}">CPU Name</span></p>
+            <p>Grafička: <span th:text="${assemble.gpuName}">GPU Name</span></p>
+            <p>Matična ploča: <span th:text="${assemble.motherboardName}">Motherboard Name</span></p>
+            <p>Napajanje: <span th:text="${assemble.psuName}">PSU Name</span></p>
+            <p>Kućište: <span th:text="${assemble.caseName}">Case Name</span></p>
+            <p>Kuler: <span th:text="${assemble.coolerName}">Cooler Name</span></p>
+            <p>Skladište:
                 <span th:each="storageName : ${assemble.storageNames}" th:text="${storageName}">Storage Names</span>
             </p>
             <p>RAM:
@@ -77,10 +127,19 @@
             </p>
             <form th:action="@{/user/assembled/delete}" method="post">
                 <input type="hidden" name="assembleId" th:value="${assemble.assembleId}" />
-                <button type="submit">Obriši</button>
+                <button type="submit" class="btn-danger">Obriši</button>
             </form>
         </div>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"
+        integrity="sha384-TGOJcfFTiKyiF6LdSk8HmC9TW+i7ze9wJJtHH2pd1A3T8G5a/sQfiMrkHrvjIX2c"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+oLpL0UvFEmaDz/ObFd/De5GcJxY2l4+O6p"
+        crossorigin="anonymous"></script>
 </body>
 </html>

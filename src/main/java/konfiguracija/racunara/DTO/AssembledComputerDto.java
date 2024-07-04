@@ -15,10 +15,13 @@ public class AssembledComputerDto {
     private List<String> storageNames;
     private List<String> ramNames;
 
-    public AssembledComputerDto(Long assembleId, String computerName, String cpuName, String gpuName,
+    private int totalprice;
+
+    public AssembledComputerDto(Long assembleId, int totalprice, String computerName, String cpuName, String gpuName,
                                 String motherboardName, String psuName, String caseName, String coolerName,
                                 String storageNames, String ramNames) {
         this.assembleId = assembleId;
+        this.totalprice=totalprice;
         this.computerName = computerName;
         this.cpuName = cpuName;
         this.gpuName = gpuName;
@@ -28,6 +31,15 @@ public class AssembledComputerDto {
         this.coolerName = coolerName;
         this.storageNames = Arrays.asList(storageNames.split(","));
         this.ramNames = Arrays.asList(ramNames.split(","));
+
+    }
+
+    public int getTotalprice() {
+        return totalprice;
+    }
+
+    public void setTotalprice(int totalprice) {
+        this.totalprice = totalprice;
     }
 
     public Long getAssembleId() {

@@ -31,7 +31,7 @@ public class UserAssembledController {
         }
         return null;
     }
-    @GetMapping("user/assembled")
+    @GetMapping("assembled")
     public String getAssembledForUser(Model model){
         List<AssembledComputerDto> assembles = assembleService.getAssembledComputersByUsername(getLoggedInUserDetails());
         model.addAttribute("assembles", assembles);
@@ -47,14 +47,18 @@ public class UserAssembledController {
     @PostMapping("RecommendedBuild/Add")
     public String InsertBuildToUser(Model model,@RequestParam Long assembleId)
     {
-        usersAssembleService.PCsForUser(getLoggedInUserDetails(),assembleId);
-        return "redirect:/user/assembled";
+        try {
+            usersAssembleService.PCsForUser(getLoggedInUserDetails(), assembleId);
+            return "redirect:/assembled";
+        }
+        catch(Exception e)
+        {return "redirect:/assembled";}
     }
     @PostMapping("user/assembled/delete")
     public String DeletePCForUser(Model model,@RequestParam Long assembleId)
     {
         usersAssembleService.DeletePCForUser(assembleId,getLoggedInUserDetails());
-        return "redirect:/user/assembled";
+        return "redirect:/assembled";
     }
 
 

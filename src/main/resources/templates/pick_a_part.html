@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Pick a Part</title>
@@ -92,18 +93,24 @@
 <body>
 <!-- Navbar content -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Sastavite vaš računar</a>
+    <a class="navbar-brand" th:href="@{/}">Konfigurator</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ml-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/RecommendedBuild}">Preporučene konfiguracije</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/assemble/pick_a_part}">Pick a Part</a>
+                <a class="nav-link" th:href="@{/assembled}">Sačuvane konfiguracije</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="logout" sec:authorize="isAuthenticated()" >Odjavite se</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/assemble/pick_a_part}" sec:authorize="!isAuthenticated()" >Prijavite se</a>
             </li>
             <!-- Add more navigation links as needed -->
         </ul>
@@ -114,11 +121,12 @@
     <h1>Izaberite Vaše komponente</h1>
 
     <!-- Error and warning boxes -->
-    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
-    <div th:if="${wattageError}" class="alert alert-danger" th:text="${wattageError}"></div>
-    <div th:if="${bottleneckWarning}" class="alert alert-danger" th:text="${bottleneckWarning}"></div>
-    <div th:if="${ramMotherboardError}" class="alert alert-danger" th:text="${ramMotherboardError}"></div>
-    <div th:if="${memoryError}" class="alert alert-danger" th:text="${memoryError}"></div>
+    <div th:if="${error == 'Procesor i matična nisu kompatabilni!'}" class="alert alert-danger" th:text="${error}"></div>
+    <div th:if="${wattageError=='Preslabo napajanje izaberite drugo!'}" class="alert alert-danger" th:text="${wattageError}"></div>
+    <div th:if="${bottleneckWarning=='Postoji mogućnost od bottleneck-a! Izaberite bolji procesor' || bottleneckWarning== 'Postoji mogućnost od bottleneck-a! Izaberite bolju grafičku kartu'}" class="alert alert-danger" th:text="${bottleneckWarning}"></div>
+    <div th:if="${ramMotherboardError=='RAM i matična nisu kompatibilni!'}" class="alert alert-danger" th:text="${ramMotherboardError}"></div>
+    <div th:if="${memoryError=='Nema dovoljno mesta na matičnoj za RAM, izbrišite neku dodatu memoriju!'}" class="alert alert-danger" th:text="${memoryError}"></div>
+    <div th:if="${notsameError=='Memorije nisu istog tipa!'}" class="alert alert-danger" th:text="${notsameError}"></div>
 
 
     <h2>Izabrane komponente</h2>
@@ -131,37 +139,37 @@
         </tr>
         <tr>
             <td>Grafička</td>
-            <td><span th:text="${selectedGpu}">None</span></td>
+            <td><span th:text="${selectedGpu}"></span></td>
             <td><a th:href="@{/gpus}">Dodaj Grafičku</a></td>
             <td><span th:text="${gpuPrice != null ? gpuPrice + ' €' : ''}"></span></td>
         </tr>
         <tr>
             <td>Procesor</td>
-            <td><span th:text="${selectedCpu}">None</span></td>
+            <td><span th:text="${selectedCpu}"></span></td>
             <td><a th:href="@{/cpus}">Dodaj Procesor</a></td>
             <td><span th:text="${cpuPrice != null ? cpuPrice + ' €' : ''}"></span></td>
         </tr>
         <tr>
             <td>Matična</td>
-            <td><span th:text="${selectedMotherboard}">None</span></td>
+            <td><span th:text="${selectedMotherboard}"></span></td>
             <td><a th:href="@{/motherboards}">Dodaj Matičnu</a></td>
             <td><span th:text="${motherboardPrice != null ? motherboardPrice + ' €' : ''}"></span></td>
         </tr>
         <tr>
             <td>Napajanje</td>
-            <td><span th:text="${selectedPsu}">None</span></td>
+            <td><span th:text="${selectedPsu}"></span></td>
             <td><a th:href="@{/psus}">Dodaj Napajanje</a></td>
             <td><span th:text="${psuPrice != null ? psuPrice + ' €' : ''}"></span></td>
         </tr>
         <tr>
             <td>Kućište</td>
-            <td><span th:text="${selectedCase}">None</span></td>
+            <td><span th:text="${selectedCase}"></span></td>
             <td><a th:href="@{/cases}">Dodaj Kućište</a></td>
             <td><span th:text="${casePrice != null ? casePrice + ' €' : ''}"></span></td>
         </tr>
         <tr>
             <td>Kuler</td>
-            <td><span th:text="${selectedCooler}">None</span></td>
+            <td><span th:text="${selectedCooler}"></span></td>
             <td><a th:href="@{/coolers}">Dodaj Kuler</a></td>
             <td><span th:text="${coolerPrice != null ? coolerPrice + ' €' : ''}"></span></td>
         </tr>
@@ -215,7 +223,7 @@
     </table>
 
     <!-- Form to save assembly -->
-    <form th:action="@{/assemble/save}" method="post">
+    <form th:action="@{/assemble/save}" method="post" id="assemblyForm">
         <!-- Hidden inputs for component prices and IDs -->
         <input type="hidden" name="gpuPrice" th:value="${gpuPrice}" />
         <input type="hidden" name="cpuPrice" th:value="${cpuPrice}" />
@@ -227,7 +235,7 @@
         <input type="hidden" name="ramIds" th:value="${selectedRamIds}" />
 
         <!-- Hidden inputs for component IDs -->
-        <input type="hidden" name="gpuId" th:value="${selectedGpuId}" />
+        <input type="hidden" name="gpuId" th:value="${selectedGpuId}"  />
         <input type="hidden" name="cpuId" th:value="${selectedCpuId}" />
         <input type="hidden" name="motherboardId" th:value="${selectedMotherboardId}" />
         <input type="hidden" name="psuId" th:value="${selectedPsuId}" />
@@ -241,8 +249,9 @@
         </div>
 
         <!-- Save button -->
-        <button type="submit" class="btn btn-primary">Sačuvajte računar</button>
+        <button type="submit" class="btn btn-primary" id="saveButton">Sačuvajte računar</button>
     </form>
+
 </div>
 
 <!-- Bootstrap JS and jQuery (required for Bootstrap) -->
@@ -255,5 +264,7 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
         integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+oLpL0UvFEmaDz/ObFd/De5GcJxY2l4+O6p"
         crossorigin="anonymous"></script>
+<script th:src="@{/validate.js}"></script>
+
 </body>
 </html>

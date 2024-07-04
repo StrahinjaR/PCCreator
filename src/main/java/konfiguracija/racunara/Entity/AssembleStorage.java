@@ -6,34 +6,33 @@ import jakarta.persistence.*;
 @Table(name = "assemble_storage")
 public class AssembleStorage {
 
-    @EmbeddedId
-    private AssembleStorageId id = new AssembleStorageId();
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @ManyToOne
-    @MapsId("assembleId")
     @JoinColumn(name = "assemble_id")
     private Assemble assemble;
 
     @ManyToOne
-    @MapsId("storageId")
     @JoinColumn(name = "storage_id")
     private Storage storage;
 
-    // Constructors, getters, and setters
+
     public AssembleStorage() {
     }
 
     public AssembleStorage(Assemble assemble, Storage storage) {
         this.assemble = assemble;
         this.storage = storage;
-        this.id = new AssembleStorageId((Long) assemble.getId(), (Long) storage.getId());
+
     }
 
-    public AssembleStorageId getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(AssembleStorageId id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

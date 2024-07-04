@@ -24,7 +24,7 @@ public class AssembleService {
 
         return results.stream().map(result -> new AssembledComputerDto(
                 ((Number) result[0]).longValue(),
-                (String) result[1],
+                ((Number) result[1]).intValue(),
                 (String) result[2],
                 (String) result[3],
                 (String) result[4],
@@ -32,7 +32,9 @@ public class AssembleService {
                 (String) result[6],
                 (String) result[7],
                 (String) result[8],
-                (String) result[9]
+                (String) result[9],
+                (String) result[10]
+
         )).collect(Collectors.toList());
 }
     public List<AssembledComputerDto> getAssembledComputersById() {
@@ -40,7 +42,7 @@ public class AssembleService {
 
         return results.stream().map(result -> new AssembledComputerDto(
                 ((Number) result[0]).longValue(),
-                (String) result[1],
+                ((Number) result[1]).intValue(),
                 (String) result[2],
                 (String) result[3],
                 (String) result[4],
@@ -48,7 +50,8 @@ public class AssembleService {
                 (String) result[6],
                 (String) result[7],
                 (String) result[8],
-                (String) result[9]
+                (String) result[9],
+                (String) result[10]
         )).collect(Collectors.toList());
     }
 }

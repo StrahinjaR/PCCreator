@@ -13,6 +13,7 @@ import java.util.List;
 public interface AssembleRepository extends JpaRepository<Assemble, Integer> {
     @Query(value = "SELECT " +
             "a.id, " +
+            "a.total_price," +
             "a.computer_name AS computerName, " +
             "c.name AS cpuName, " +
             "g.name AS gpuName, " +
@@ -40,6 +41,7 @@ public interface AssembleRepository extends JpaRepository<Assemble, Integer> {
     List<Object[]> findAssembledComputersByUsername(@Param("username") String username);
     @Query(value = "SELECT " +
             "a.id, " +
+            "a.total_price," +
             "a.computer_name AS computerName, " +
             "c.name AS cpuName, " +
             "g.name AS gpuName, " +
@@ -61,7 +63,7 @@ public interface AssembleRepository extends JpaRepository<Assemble, Integer> {
             "LEFT JOIN storage s ON ast.storage_id = s.id " +
             "LEFT JOIN assemble_ram ar ON a.id = ar.assemble_id " +
             "LEFT JOIN ram r ON ar.ram_id = r.id " +
-            "WHERE a.id BETWEEN 1 AND 4 " +
+            "WHERE a.id BETWEEN 7 AND 9 " +
             "GROUP BY a.id, a.computer_name, c.name, g.name, m.name, p.name, cc.name, cl.name",
             nativeQuery = true)
     List<Object[]> findAssembledComputersByUsername();

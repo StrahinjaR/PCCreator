@@ -5,6 +5,8 @@ import konfiguracija.racunara.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Array;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -57,6 +59,16 @@ public class CompabilityService {
         if(motherboard.getDdrType().equals(extractDdrType(ram.getModule())))
             return true;
         else return false;
+    }
+    public Boolean isRamSame(List<Long> ramIds) {
+        if (ramIds.size() > 1) {
+            for (int i = 1; i < ramIds.size(); i++) {
+                if (ramIds.get(0) != ramIds.get(i))
+                    return true;
+
+            }
+        }
+        return false;
     }
     }
 
