@@ -2,23 +2,85 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>User Assembles</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+             background-image: url("https://i.pinimg.com/originals/9e/ec/3c/9eec3cd5c2a2064be3005409dca25f01.jpg");
+             background-size: cover;
+             background-repeat: no-repeat;
+            margin: 0;
+        }
+
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            max-width: 1000px;
+        }
+
+        .card {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: calc(33.33% - 20px); /* Three cards per row */
+            max-width: 280px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .card img {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .card h2 {
+            color: #333333;
+            margin-bottom: 10px;
+        }
+
+        .computer-info p {
+            margin: 5px 0;
+        }
+
+        .computer-info span {
+            font-weight: bold;
+            color: #007bff;
+        }
+    </style>
 </head>
 <body>
-<h1>User Assembles</h1>
-<div th:each="assemble : ${assembles}">
-    <h2 th:text="${assemble.computerName}">Computer Name</h2>
-    <p>CPU: <span th:text="${assemble.cpuName}">CPU Name</span></p>
-    <p>GPU: <span th:text="${assemble.gpuName}">GPU Name</span></p>
-    <p>Motherboard: <span th:text="${assemble.motherboardName}">Motherboard Name</span></p>
-    <p>PSU: <span th:text="${assemble.psuName}">PSU Name</span></p>
-    <p>Case: <span th:text="${assemble.caseName}">Case Name</span></p>
-    <p>Cooler: <span th:text="${assemble.coolerName}">Cooler Name</span></p>
-    <p>Storage:
-        <span th:each="storageName : ${assemble.storageNames}" th:text="${storageName}">Storage Names</span>
-    </p>
-    <p>RAM:
-        <span th:each="ramName : ${assemble.ramNames}" th:text="${ramName}">RAM Names</span>
-    </p>
+<div class="card-container">
+    <div th:each="assemble, iterStat : ${assembles}" class="card">
+        <img th:if="${iterStat.index % 3 == 0}" src="https://img.gigatron.rs/img/products/large/image655b0c165672e.jpg" alt="Assembled PC Image">
+        <img th:if="${iterStat.index % 3 == 1}" src="https://img.gigatron.rs/img/products/large/image65dd8d4fd420c.jpg" alt="Assembled PC Image">
+        <img th:if="${iterStat.index % 3 == 2}" src="https://img.gigatron.rs/img/products/large/image65d47d651b850.jpg" alt="Assembled PC Image">
+        <h2 th:text="${assemble.computerName}">Computer Name</h2>
+        <div class="computer-info">
+            <p>CPU: <span th:text="${assemble.cpuName}">CPU Name</span></p>
+            <p>GPU: <span th:text="${assemble.gpuName}">GPU Name</span></p>
+            <p>Motherboard: <span th:text="${assemble.motherboardName}">Motherboard Name</span></p>
+            <p>PSU: <span th:text="${assemble.psuName}">PSU Name</span></p>
+            <p>Case: <span th:text="${assemble.caseName}">Case Name</span></p>
+            <p>Cooler: <span th:text="${assemble.coolerName}">Cooler Name</span></p>
+            <p>Storage:
+                <span th:each="storageName : ${assemble.storageNames}" th:text="${storageName}">Storage Names</span>
+            </p>
+            <p>RAM:
+                <span th:each="ramName : ${assemble.ramNames}" th:text="${ramName}">RAM Names</span>
+            </p>
+            <form th:action="@{/user/assembled/delete}" method="post">
+                <input type="hidden" name="assembleId" th:value="${assemble.assembleId}" />
+                <button type="submit">Obriši</button>
+            </form>
+        </div>
+    </div>
 </div>
 </body>
 </html>

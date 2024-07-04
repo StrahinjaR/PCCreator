@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <style>
+        body {
+    background-image: url("https://static.vecteezy.com/system/resources/previews/003/161/264/original/abstract-elegant-squares-pattern-geometric-white-gray-background-vector.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+        /* Navbar styles */
+        .navbar {
+            background-color: #6c757d;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        .navbar-nav .nav-link {
+            color: #ffffff;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #f8f9fa;
+        }
+
+        /* Main container styles */
+        .container {
+            max-width: 800px;
+            margin-top: 50px;
+        }
+
+        /* Image styles */
+        .img-fluid {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        /* Button styles */
+        .btn-secondary {
+            position: absolute;
+            left: 50%;
+            text-color:black;
+
+            transform: translateX(-50%);
+            bottom: 55%;
+            z-index: 1;
+        }
+
+    </style>
+    <meta charset="UTF-8">
+    <title>Build Your PC</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+</head>
+<body>
+
+<!-- Navbar content -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Build Your PC</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/assemble/pick_a_part}">Pick a Part</a>
+            </li>
+            <!-- Add more navigation links as needed -->
+        </ul>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <h1>Welcome to Build Your PC</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <img src="https://images-ext-1.discordapp.net/external/TiYiCj07VEaqbbWriOKqlMG-5tq06M79n9ccCdHoI00/https/www.corsair.com/pc-builder/WYSIWYG/welcome_2023.webp?format=webp" alt="Build Your PC" class="img-fluid">
+            <a th:href="@{/assemble/pick_a_part}" class="btn btn-secondary btn-lg">Start Building Your PC</a>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS and jQuery (required for Bootstrap) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"
+        integrity="sha384-TGOJcfFTiKyiF6LdSk8HmC9TW+i7ze9wJJtHH2pd1A3T8G5a/sQfiMrkHrvjIX2c"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+oLpL0UvFEmaDz/ObFd/De5GcJxY2l4+O6p"
+        crossorigin="anonymous"></script>
+</body>
+</html>

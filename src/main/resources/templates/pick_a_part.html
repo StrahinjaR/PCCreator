@@ -3,69 +3,257 @@
 <head>
     <meta charset="UTF-8">
     <title>Pick a Part</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <style>
+        /* Navbar styles */
+        .navbar {
+            background-color: #f8f9fa; /* Light gray background */
+            border-bottom: 1px solid #dee2e6; /* Light border */
+        }
+
+        .navbar-brand {
+            font-weight: bold; /* Bold text for brand */
+            color: #007bff; /* Blue color */
+        }
+
+        .navbar-nav .nav-link {
+            color: #495057; /* Dark text color */
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #007bff; /* Blue color on hover */
+        }
+
+        /* Main content styles */
+
+
+        .container {
+            max-width: 800px; /* Max width for content */
+            margin: 0 auto; /* Center align content */
+        }
+
+        /* Table styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        th {
+            background-color: #f2f2f2; /* Light gray background for header */
+        }
+
+        /* Alert box styles */
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
+
+        .alert-danger {
+            color: #721c24; /* Dark red text color */
+            background-color: #f8d7da; /* Light red background */
+            border-color: #f5c6cb; /* Light red border */
+        }
+
+
+
+        label {
+            margin-right: 10px;
+        }
+
+        input[type="text"] {
+            padding: 5px;
+            width: 200px;
+            margin-right: 10px;
+        }
+
+        button[type="submit"] {
+            padding: 8px 20px;
+            background-color: #007bff; /* Blue background */
+            color: #fff; /* White text color */
+            border: none;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+    </style>
 </head>
 <body>
-<h1>Pick Your PC Components</h1>
+<!-- Navbar content -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Sastavite vaš računar</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/assemble/pick_a_part}">Pick a Part</a>
+            </li>
+            <!-- Add more navigation links as needed -->
+        </ul>
+    </div>
+</nav>
 
-<div th:if="${error}" class="alert alert-danger" th:text="${error}"> <p> Test</p></div>
-<div th:if="${wattageError}" class="alert alert-danger" th:text="${wattageError}"> <p> Test</p></div>
-<div th:if="${bottleneckWarning}" class="alert alert-danger" th:text="${bottleneckWarning}"> <p> Test</p></div>
-<div th:if="${ramMotherboardError}" class="alert alert-danger" th:text="${ramMotherboardError}"> <p> Test</p></div>
-<div th:if="${memoryError}" class="alert alert-danger" th:text="${memoryError}"> <p> Test</p></div>
-<div>
-    <h2>Selected Components</h2>
-    <ul>
-        <li>GPU: <span th:text="${selectedGpu}">None</span> <a th:href="@{/gpus}">Change</a>   <span th:text="${gpuPrice != null ? gpuPrice + ' €' : ''}"></span></li>
-        <li>CPU: <span th:text="${selectedCpu}">None</span> <a th:href="@{/cpus}">Change</a>  <span th:text="${cpuPrice != null ? cpuPrice + ' €' : ''}"></span></li>
-        <li>Motherboard: <span th:text="${selectedMotherboard}">None</span> <a th:href="@{/motherboards}">Change</a>  <span th:text="${motherboardPrice != null ? motherboardPrice + ' €' : ''}"></span></li>
-        <li>PSU: <span th:text="${selectedPsu}">None</span> <a th:href="@{/psus}">Change</a>  <span th:text="${psuPrice != null ? psuPrice + ' €' : ''}"></span></li>
-        <li>Case: <span th:text="${selectedCase}">None</span> <a th:href="@{/cases}">Change</a>  <span th:text="${casePrice != null ? casePrice + ' €' : ''}"></span></li>
-        <li>Cooler: <span th:text="${selectedCooler}">None</span> <a th:href="@{/coolers}">Change</a>  <span th:text="${coolerPrice != null ? coolerPrice + ' €' : ''}"></span></li>
-        <li>Storage:
-            <ul>
-                <li th:each="storage, iterStat : ${selectedStorages}">
-                    <span th:text="${storage}"></span>
-                    <span th:text="${storagePrice[iterStat.index]} + ' €'  "></span>
-                </li>
-            </ul>
-            <a th:href="@{/storage}">Add Storage</a>
-        </li>
-        <li>Ram:
-            <ul>
-                <li th:each="ram, iterStat : ${selectedRams}">
-                    <span th:text="${ram}"></span>
-                    <span th:text="${ramPrice[iterStat.index]} + ' €'"></span>
-                </li>
-            </ul>
-            <a th:href="@{/rams}">Add ram</a>
-        </li>
+<div class="container">
+    <h1>Izaberite Vaše komponente</h1>
+
+    <!-- Error and warning boxes -->
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+    <div th:if="${wattageError}" class="alert alert-danger" th:text="${wattageError}"></div>
+    <div th:if="${bottleneckWarning}" class="alert alert-danger" th:text="${bottleneckWarning}"></div>
+    <div th:if="${ramMotherboardError}" class="alert alert-danger" th:text="${ramMotherboardError}"></div>
+    <div th:if="${memoryError}" class="alert alert-danger" th:text="${memoryError}"></div>
 
 
-    </ul>
+    <h2>Izabrane komponente</h2>
+    <table>
+        <tr>
+            <th>Komponenta</th>
+            <th>Izabrana</th>
+            <th>Dodaj</th>
+            <th>Cena</th>
+        </tr>
+        <tr>
+            <td>Grafička</td>
+            <td><span th:text="${selectedGpu}">None</span></td>
+            <td><a th:href="@{/gpus}">Dodaj Grafičku</a></td>
+            <td><span th:text="${gpuPrice != null ? gpuPrice + ' €' : ''}"></span></td>
+        </tr>
+        <tr>
+            <td>Procesor</td>
+            <td><span th:text="${selectedCpu}">None</span></td>
+            <td><a th:href="@{/cpus}">Dodaj Procesor</a></td>
+            <td><span th:text="${cpuPrice != null ? cpuPrice + ' €' : ''}"></span></td>
+        </tr>
+        <tr>
+            <td>Matična</td>
+            <td><span th:text="${selectedMotherboard}">None</span></td>
+            <td><a th:href="@{/motherboards}">Dodaj Matičnu</a></td>
+            <td><span th:text="${motherboardPrice != null ? motherboardPrice + ' €' : ''}"></span></td>
+        </tr>
+        <tr>
+            <td>Napajanje</td>
+            <td><span th:text="${selectedPsu}">None</span></td>
+            <td><a th:href="@{/psus}">Dodaj Napajanje</a></td>
+            <td><span th:text="${psuPrice != null ? psuPrice + ' €' : ''}"></span></td>
+        </tr>
+        <tr>
+            <td>Kućište</td>
+            <td><span th:text="${selectedCase}">None</span></td>
+            <td><a th:href="@{/cases}">Dodaj Kućište</a></td>
+            <td><span th:text="${casePrice != null ? casePrice + ' €' : ''}"></span></td>
+        </tr>
+        <tr>
+            <td>Kuler</td>
+            <td><span th:text="${selectedCooler}">None</span></td>
+            <td><a th:href="@{/coolers}">Dodaj Kuler</a></td>
+            <td><span th:text="${coolerPrice != null ? coolerPrice + ' €' : ''}"></span></td>
+        </tr>
+        <tr>
+            <td>Skladište</td>
+            <td>
+        <span th:each="storage, iterStat : ${selectedStorages}" >
+            <span th:text="${storage}"></span>
+               <form th:action="@{/assemble/pick_a_part/removeStorage}" method="post">
+                <input type="hidden" name="index" th:value="${iterStat.index}" />
+                <button type="submit" style="font-size: 12px;">Remove</button>
+            </form>
+        </span>
+            </td>
+            <td>
+
+                <a th:href="@{/storage}">Dodaj Skladište</a>
+            </td>
+            <td>
+        <span th:each="price : ${storagePrice}">
+            <span th:text="${price} + ' €'"></span><br/>
+               <button type="" style="font-size: 12px;" hidden>Ukloni</button><br/>
+        </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>Ram</td>
+            <td>
+        <span th:each="ram, iterStat : ${selectedRams}">
+            <span th:text="${ram}"></span>
+               <form th:action="@{/assemble/pick_a_part/removeRam}" method="post">
+                <input type="hidden" name="index" th:value="${iterStat.index}" />
+                <button type="submit" style="font-size: 12px;">Ukloni</button>
+            </form>
+        </span>
+            </td>
+            <td>
+
+                <a th:href="@{/rams}">Dodaj RAM</a>
+            </td>
+            <td>
+        <span th:each="price : ${ramPrice}">
+            <span th:text="${price} + ' €'"></span><br/>
+               <button type="" style="font-size: 12px;" hidden>Ukloni</button><br/>
+        </span>
+            </td>
+        </tr>
+
+
+    </table>
+
+    <!-- Form to save assembly -->
+    <form th:action="@{/assemble/save}" method="post">
+        <!-- Hidden inputs for component prices and IDs -->
+        <input type="hidden" name="gpuPrice" th:value="${gpuPrice}" />
+        <input type="hidden" name="cpuPrice" th:value="${cpuPrice}" />
+        <input type="hidden" name="motherboardPrice" th:value="${motherboardPrice}" />
+        <input type="hidden" name="psuPrice" th:value="${psuPrice}" />
+        <input type="hidden" name="casePrice" th:value="${casePrice}" />
+        <input type="hidden" name="coolerPrice" th:value="${coolerPrice}" />
+        <input type="hidden" name="storageIds" th:value="${selectedStorageIds}" />
+        <input type="hidden" name="ramIds" th:value="${selectedRamIds}" />
+
+        <!-- Hidden inputs for component IDs -->
+        <input type="hidden" name="gpuId" th:value="${selectedGpuId}" />
+        <input type="hidden" name="cpuId" th:value="${selectedCpuId}" />
+        <input type="hidden" name="motherboardId" th:value="${selectedMotherboardId}" />
+        <input type="hidden" name="psuId" th:value="${selectedPsuId}" />
+        <input type="hidden" name="caseId" th:value="${selectedCaseId}" />
+        <input type="hidden" name="coolerId" th:value="${selectedCoolerId}" />
+
+        <!-- Computer name input -->
+        <div class="form-group">
+            <label for="computerName">Naziv računara:</label>
+            <input type="text" id="computerName" name="computerName" class="form-control" required>
+        </div>
+
+        <!-- Save button -->
+        <button type="submit" class="btn btn-primary">Sačuvajte računar</button>
+    </form>
 </div>
 
-<form th:action="@{/assemble/save}" method="post">
-    <input type="hidden" name="gpuPrice" th:value="${gpuPrice}" />
-    <input type="hidden" name="cpuPrice" th:value="${cpuPrice}" />
-    <input type="hidden" name="motherboardPrice" th:value="${motherboardPrice}" />
-    <input type="hidden" name="psuPrice" th:value="${psuPrice}" />
-    <input type="hidden" name="casePrice" th:value="${casePrice}" />
-    <input type="hidden" name="coolerPrice" th:value="${coolerPrice}" />
-
-
-    <input type="hidden" name="gpuId" th:value="${selectedGpuId}" />
-    <input type="hidden" name="cpuId" th:value="${selectedCpuId}" />
-    <input type="hidden" name="motherboardId" th:value="${selectedMotherboardId}" />
-    <input type="hidden" name="psuId" th:value="${selectedPsuId}" />
-    <input type="hidden" name="caseId" th:value="${selectedCaseId}" />
-    <input type="hidden" name="coolerId" th:value="${selectedCoolerId}" />
-    <input type="hidden" name="storageIds" th:value="${selectedStorageIds}" />
-    <input type="hidden" name="ramIds" th:value="${selectedRamIds}" />
-
-    <label for="computerName">Computer Name:</label>
-    <input type="text" id="computerName" name="computerName" required>
-    <button type="submit">Save Assembly</button>
-</form>
-
+<!-- Bootstrap JS and jQuery (required for Bootstrap) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"
+        integrity="sha384-TGOJcfFTiKyiF6LdSk8HmC9TW+i7ze9wJJtHH2pd1A3T8G5a/sQfiMrkHrvjIX2c"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+oLpL0UvFEmaDz/ObFd/De5GcJxY2l4+O6p"
+        crossorigin="anonymous"></script>
 </body>
 </html>

@@ -222,6 +222,31 @@ public class PickAPartController {
         }
         return "redirect:/assemble/pick_a_part";
     }
+    @PostMapping("/pick_a_part/removeRam")
+    public String removeRam(@RequestParam("index") int index,
+                            @ModelAttribute("selectedRamIds") List<Long> ramIds,
+                            @ModelAttribute("selectedRams") List<String> ramNames,
+                            @ModelAttribute("ramPrice") List<Integer> ramPrices) {
+        if (index >= 0 && index < ramIds.size()) {
+            ramIds.remove(index);
+            ramNames.remove(index);
+            ramPrices.remove(index);
+        }
+        return "redirect:/assemble/pick_a_part";
+    }
+    @PostMapping("/pick_a_part/removeStorage")
+    public String removeStorage(@RequestParam("index") int index,
+                            @ModelAttribute("selectedStorageIds") List<Long> storageIds,
+                            @ModelAttribute("selectedStorages") List<String> storageNames,
+                            @ModelAttribute("storagePrice") List<Integer> storagePrice) {
+        if (index >= 0 && index < storageIds.size()) {
+            storageIds.remove(index);
+            storageNames.remove(index);
+            storagePrice.remove(index);
+        }
+        return "redirect:/assemble/pick_a_part";
+    }
+
 
 
 

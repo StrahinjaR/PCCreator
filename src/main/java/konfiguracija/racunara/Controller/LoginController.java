@@ -20,10 +20,10 @@ public class LoginController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+
     @GetMapping("/")
-    @ResponseBody
-    public String goH0me() {
-        return "This is publickly accesible withing needing authentication ";
+    public String index() {
+        return "index";
     }
 
     @GetMapping("/users/single")

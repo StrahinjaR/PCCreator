@@ -61,9 +61,10 @@ public interface AssembleRepository extends JpaRepository<Assemble, Integer> {
             "LEFT JOIN storage s ON ast.storage_id = s.id " +
             "LEFT JOIN assemble_ram ar ON a.id = ar.assemble_id " +
             "LEFT JOIN ram r ON ar.ram_id = r.id " +
-            "WHERE a.id =1 " +
+            "WHERE a.id BETWEEN 1 AND 4 " +
             "GROUP BY a.id, a.computer_name, c.name, g.name, m.name, p.name, cc.name, cl.name",
             nativeQuery = true)
     List<Object[]> findAssembledComputersByUsername();
+
 
 }
